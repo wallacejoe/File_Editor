@@ -21,6 +21,20 @@ void ReadFile(vector<list<string>> data)
     cout << "====================";
 }
 
+string SearchUpdateMenu()
+{
+    string input;
+    cout << "\n\n\n  0. Cancel";
+    cout << "\n  1. Search by Name";
+    cout << "\n  2. Search by Class";
+    cout << "\n  3. Search by Manufacturer";
+    cout << "\n  4. Search by Quantity";
+    cout << "\n  Select a choice from the menu: ";
+    cin >> input;
+
+    return input;
+}
+
 // The built-in function for executing code
 int main()
 {
@@ -50,10 +64,12 @@ int main()
 
         if (selection == "2")
         {
+            string input = SearchUpdateMenu();
         }
 
         if (selection == "3")
         {
+            string input = SearchUpdateMenu();
         }
     }
     return 0;
@@ -71,12 +87,12 @@ int main()
 
 // [X] Create a basic interface for the program
 // [X] Add stud data
-// [] Add basic data manipulation
+// [X] Add basic data manipulation
 // [X] Implement basic file reading
-// [] Add more complex data manipulation
+// [X] Add more complex data manipulation
 // [] Transition to CSV file format
 // [] Implement file writing
-// [] Add data filter options
+// [X] Add data filter options
 // [] Add error handling
 
 // Final review, video demo, push to GitHub, and canvas submission
