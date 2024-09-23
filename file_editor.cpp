@@ -4,22 +4,68 @@
 #include <vector>
 // Includes the list library
 #include <list>
+// Allows for the use of files
+#include <iostream>
+#include <fstream>
+// Used for splitting sentences
+#include <sstream>
 // Allows for use of names from the standard library for objects
 using namespace std;
 
-void ReadFile(vector<list<string>> data)
+class File
 {
-    cout << "====================";
-    for (list<string> ship : data)
+private:
+    string _filename;
+    vector<vector<string>> _data;
+
+public:
+    File(string filename)
     {
-        cout << "\n";
-        for (string value : ship)
-        {
-            cout << value + " ";
-        }
+        _filename = filename;
     }
-    cout << "====================";
-}
+
+    void ReadFile()
+    {
+        string text;
+        ifstream MyReadFile(_filename);
+        // Loop through each line in the file
+        while (getline(MyReadFile, text))
+        {
+            vector<string> words;
+            stringstream ss(text);
+            string word;
+
+            // Separate values by comma
+            while (getline(ss, word, ','))
+            {
+                words.push_back(word);
+            }
+
+            _data.push_back(words);
+        }
+        // Close the file
+        MyReadFile.close();
+    }
+
+    void DisplayData()
+    {
+        cout << "\n====================";
+        for (vector<string> line : _data)
+        {
+            cout << "\n";
+            for (string value : line)
+            {
+                cout << value + " ";
+            }
+        }
+        cout << "\n====================";
+    }
+
+    string GetFilename()
+    {
+        return _filename;
+    }
+};
 
 string SearchUpdateMenu()
 {
@@ -38,16 +84,13 @@ string SearchUpdateMenu()
 // The built-in function for executing code
 int main()
 {
-    // ShipName, Class, Manufacturer, Quantity
-    vector<list<string>> studData =
-        {
-            {"Ship-1", "Class1", "M1", "3"},
-            {"Ship-2", "Class1", "M1", "4"},
-            {"Ship-4", "Class2", "M1", "1"},
-            {"Ship-3", "Class2", "M2", "2"},
-            {"Ship-5", "Class3", "M3", "3"}};
-
     string selection;
+    string filename;
+
+    cout << "\nEnter the path for the file you'd like to use: ";
+    cin >> filename;
+    File file(filename);
+    file.ReadFile();
     while (selection != "0")
     {
         cout << "\n\n\n  0. Quit";
@@ -59,7 +102,7 @@ int main()
 
         if (selection == "1")
         {
-            ReadFile(studData);
+            file.DisplayData();
         }
 
         if (selection == "2")
@@ -80,7 +123,7 @@ int main()
 // [X] Conditionals
 // [X] Loops
 // [X] Functions
-// [] Classes
+// [X] Classes
 // [X] Data structure from STL
 // [X] Read from a file
 // [] Write to a file
