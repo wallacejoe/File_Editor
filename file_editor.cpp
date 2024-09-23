@@ -18,6 +18,23 @@ private:
     string _filename;
     vector<vector<string>> _data;
 
+    void SearchFile(int value = 0, string input = "", bool search = false)
+    {
+        cout << "\n====================";
+        for (vector<string> line : _data)
+        {
+            if (line[value] == input || search == false)
+            {
+                cout << "\n";
+                for (string value : line)
+                {
+                    cout << value + " ";
+                }
+            }
+        }
+        cout << "\n====================";
+    }
+
 public:
     File(string filename)
     {
@@ -49,16 +66,56 @@ public:
 
     void DisplayData()
     {
-        cout << "\n====================";
-        for (vector<string> line : _data)
+        SearchFile();
+    }
+
+    int SearchUpdateMenu()
+    {
+        string input = "0";
+        cout << "\n\n\n  0. Cancel";
+        cout << "\n  1. Search by Name";
+        cout << "\n  2. Search by Class";
+        cout << "\n  3. Search by Manufacturer";
+        cout << "\n  4. Search by Quantity";
+        cout << "\n  Select a choice from the menu: ";
+        cin >> input;
+
+        if (input == "1")
         {
-            cout << "\n";
-            for (string value : line)
-            {
-                cout << value + " ";
-            }
+            return 0;
         }
-        cout << "\n====================";
+        else if (input == "2")
+        {
+            return 1;
+        }
+        else if (input == "3")
+        {
+            return 2;
+        }
+        else if (input == "4")
+        {
+            return 3;
+        }
+        else
+        {
+            return 4;
+        }
+    }
+
+    void Search()
+    {
+        int parameter = SearchUpdateMenu();
+
+        if (parameter == 4)
+        {
+        }
+        else
+        {
+            string input;
+            cout << "\n\nInput the keyword to search for: ";
+            cin >> input;
+            SearchFile(parameter, input, true);
+        }
     }
 
     string GetFilename()
@@ -66,20 +123,6 @@ public:
         return _filename;
     }
 };
-
-string SearchUpdateMenu()
-{
-    string input;
-    cout << "\n\n\n  0. Cancel";
-    cout << "\n  1. Search by Name";
-    cout << "\n  2. Search by Class";
-    cout << "\n  3. Search by Manufacturer";
-    cout << "\n  4. Search by Quantity";
-    cout << "\n  Select a choice from the menu: ";
-    cin >> input;
-
-    return input;
-}
 
 // The built-in function for executing code
 int main()
@@ -95,8 +138,8 @@ int main()
     {
         cout << "\n\n\n  0. Quit";
         cout << "\n  1. Read File";
-        cout << "\n  2. Update File";
-        cout << "\n  3. Search File";
+        cout << "\n  2. Search File";
+        cout << "\n  3. Update File";
         cout << "\n  Select a choice from the menu: ";
         cin >> selection;
 
@@ -107,35 +150,17 @@ int main()
 
         if (selection == "2")
         {
-            string input = SearchUpdateMenu();
+            file.Search();
         }
 
         if (selection == "3")
         {
-            string input = SearchUpdateMenu();
+            // file.Update();
         }
     }
     return 0;
 }
 
-// [X] Variables
-// [X] Expressions
-// [X] Conditionals
-// [X] Loops
-// [X] Functions
-// [X] Classes
-// [X] Data structure from STL
-// [X] Read from a file
-// [] Write to a file
-
-// [X] Create a basic interface for the program
-// [X] Add stud data
-// [X] Add basic data manipulation
-// [X] Implement basic file reading
-// [X] Add more complex data manipulation
-// [] Transition to CSV file format
-// [] Implement file writing
-// [X] Add data filter options
 // [] Add error handling
 
 // Final review, video demo, push to GitHub, and canvas submission
