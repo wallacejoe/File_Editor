@@ -2,13 +2,12 @@
 #include <iostream>
 // Includes the vector library
 #include <vector>
-// Includes the list library
-#include <list>
 // Allows for the use of files
-#include <iostream>
 #include <fstream>
 // Used for splitting sentences
 #include <sstream>
+// Ensures proper functionallity of the string type
+#include <string>
 // Allows for use of names from the standard library for objects
 using namespace std;
 
@@ -16,12 +15,12 @@ class File
 {
 private:
     string _filename;
-    vector<vector<string>> _data;
+    vector<vector<string>> data;
 
     void SearchFile(int value = 0, string input = "", bool search = false)
     {
         cout << "\n====================";
-        for (vector<string> line : _data)
+        for (vector<string> line : data)
         {
             if (line[value] == input || search == false)
             {
@@ -33,6 +32,102 @@ private:
             }
         }
         cout << "\n====================";
+    }
+
+    void NewRow(int value = -1)
+    {
+        vector<string> addition;
+        string inputs[4] = {"Name: ", "Class: ", "Manufacturer: ", "Quantity: "};
+        for (string text : inputs)
+        {
+            string input;
+            cout << "\n\n " + text;
+            cin >> input;
+            addition.push_back(input);
+        }
+        if (value >= 0)
+        {
+            data[value] = addition;
+        }
+        else
+        {
+            data.push_back(addition);
+        }
+    }
+
+    void UpdateRow(string input)
+    {
+        int num = 0;
+        for (vector<string> line : data)
+        {
+            if (line[0] == input)
+            {
+                cout << "\n Original Line:\n";
+                for (string value : line)
+                {
+                    cout << value + " ";
+                }
+                cout << "\n Update Line:\n";
+                NewRow(num);
+            }
+            num += 1;
+        }
+    }
+
+    int UpdateMenu()
+    {
+        string input = "0";
+        cout << "\n\n\n  0. Cancel";
+        cout << "\n  1. Update Line";
+        cout << "\n  2. Add Additional Line";
+        cout << "\n Select a choice from the menu: ";
+        cin >> input;
+
+        if (input == "1")
+        {
+            return 0;
+        }
+        else if (input == "2")
+        {
+            return 1;
+        }
+        else
+        {
+            return 2;
+        }
+    }
+
+    int SearchMenu()
+    {
+        string input = "0";
+        cout << "\n\n\n  0. Cancel";
+        cout << "\n  1. Search by Name";
+        cout << "\n  2. Search by Class";
+        cout << "\n  3. Search by Manufacturer";
+        cout << "\n  4. Search by Quantity";
+        cout << "\n Select a choice from the menu: ";
+        cin >> input;
+
+        if (input == "1")
+        {
+            return 0;
+        }
+        else if (input == "2")
+        {
+            return 1;
+        }
+        else if (input == "3")
+        {
+            return 2;
+        }
+        else if (input == "4")
+        {
+            return 3;
+        }
+        else
+        {
+            return 4;
+        }
     }
 
 public:
@@ -58,7 +153,7 @@ public:
                 words.push_back(word);
             }
 
-            _data.push_back(words);
+            data.push_back(words);
         }
         // Close the file
         MyReadFile.close();
@@ -69,42 +164,9 @@ public:
         SearchFile();
     }
 
-    int SearchUpdateMenu()
-    {
-        string input = "0";
-        cout << "\n\n\n  0. Cancel";
-        cout << "\n  1. Search by Name";
-        cout << "\n  2. Search by Class";
-        cout << "\n  3. Search by Manufacturer";
-        cout << "\n  4. Search by Quantity";
-        cout << "\n  Select a choice from the menu: ";
-        cin >> input;
-
-        if (input == "1")
-        {
-            return 0;
-        }
-        else if (input == "2")
-        {
-            return 1;
-        }
-        else if (input == "3")
-        {
-            return 2;
-        }
-        else if (input == "4")
-        {
-            return 3;
-        }
-        else
-        {
-            return 4;
-        }
-    }
-
     void Search()
     {
-        int parameter = SearchUpdateMenu();
+        int parameter = SearchMenu();
 
         if (parameter == 4)
         {
@@ -112,10 +174,52 @@ public:
         else
         {
             string input;
-            cout << "\n\nInput the keyword to search for: ";
+            cout << "\n\n Input the keyword to search for: ";
             cin >> input;
             SearchFile(parameter, input, true);
         }
+    }
+
+    void Update()
+    {
+        int parameter = UpdateMenu();
+
+        if (parameter == 0)
+        {
+            string name;
+            cout << "\n\n Input the name to search for: ";
+            cin >> name;
+            UpdateRow(name);
+        }
+        else if (parameter == 1)
+        {
+            NewRow();
+        }
+        else
+        {
+        }
+        // Open a file
+        ofstream MyFile(_filename);
+        // Write to the file
+        for (vector<string> line : data)
+        {
+            string item;
+            for (string value : line)
+            {
+                if (item == "")
+                {
+                    item = value;
+                }
+                else
+                {
+                    item += "," + value;
+                }
+            }
+            MyFile << item;
+            cout << "\n";
+        }
+        // Close the file
+        MyFile.close();
     }
 
     string GetFilename()
@@ -129,7 +233,7 @@ int main()
 {
     string selection;
     string filename;
-
+    // C:/Users/fbw4/OneDrive/Desktop/Josephs/CSE310/file_editor/data.csv
     cout << "\nEnter the path for the file you'd like to use: ";
     cin >> filename;
     File file(filename);
@@ -155,7 +259,7 @@ int main()
 
         if (selection == "3")
         {
-            // file.Update();
+            file.Update();
         }
     }
     return 0;
