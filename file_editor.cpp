@@ -17,6 +17,32 @@ private:
     string _filename;
     vector<vector<string>> data;
 
+    // Reads the file saving all lines to a data variable
+    void ReadFile()
+    {
+        string text;
+        ifstream MyReadFile(_filename);
+        // Loop through each line in the file
+        while (getline(MyReadFile, text))
+        {
+            vector<string> words;
+            stringstream ss(text);
+            string word;
+
+            // Separate values by comma
+            while (getline(ss, word, ','))
+            {
+                words.push_back(word);
+            }
+
+            data.push_back(words);
+        }
+        // Close the file
+        MyReadFile.close();
+    }
+
+    // Reads and prints lines from the file
+    // Optionally accepts inputs to print only specific files
     void SearchFile(int value = 0, string input = "", bool search = false)
     {
         cout << "\n====================";
@@ -34,6 +60,8 @@ private:
         cout << "\n====================";
     }
 
+    // Replaces a specific row, determined by value
+    // If no value provided, adds a new line to the end of the file
     void NewRow(int value = -1)
     {
         vector<string> addition;
@@ -55,6 +83,7 @@ private:
         }
     }
 
+    // Finds the line to be updated. Displays it in a string
     void UpdateRow(string input)
     {
         int num = 0;
@@ -74,6 +103,7 @@ private:
         }
     }
 
+    // Displays the UI for updating the file
     int UpdateMenu()
     {
         string input = "0";
@@ -97,6 +127,7 @@ private:
         }
     }
 
+    // Displays the UI for searching the file
     int SearchMenu()
     {
         string input = "0";
@@ -131,39 +162,20 @@ private:
     }
 
 public:
+    // The class constructor. Requires the full file path
     File(string filename)
     {
         _filename = filename;
+        ReadFile();
     }
 
-    void ReadFile()
-    {
-        string text;
-        ifstream MyReadFile(_filename);
-        // Loop through each line in the file
-        while (getline(MyReadFile, text))
-        {
-            vector<string> words;
-            stringstream ss(text);
-            string word;
-
-            // Separate values by comma
-            while (getline(ss, word, ','))
-            {
-                words.push_back(word);
-            }
-
-            data.push_back(words);
-        }
-        // Close the file
-        MyReadFile.close();
-    }
-
+    // A public method for calling the private SearchFile method
     void DisplayData()
     {
         SearchFile();
     }
 
+    // Takes user input and passes parameters to the SearchFile method
     void Search()
     {
         int parameter = SearchMenu();
@@ -180,6 +192,7 @@ public:
         }
     }
 
+    // Takes user input and passes parameters to the NewRow method
     void Update()
     {
         int parameter = UpdateMenu();
@@ -237,7 +250,6 @@ int main()
     cout << "\nEnter the path for the file you'd like to use: ";
     cin >> filename;
     File file(filename);
-    file.ReadFile();
     while (selection != "0")
     {
         cout << "\n\n\n  0. Quit";
